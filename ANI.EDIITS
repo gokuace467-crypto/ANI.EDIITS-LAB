@@ -1,0 +1,349 @@
+<html lang="en" class="scroll-smooth"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANI.EDIITS LAB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&amp;family=Space+Grotesk:wght@300;400;500&amp;display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030303;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Glitch Animation */
+        .glitch-wrapper {
+            position: relative;
+        }
+
+        .glitch {
+            position: relative;
+            color: white;
+            z-index: 1;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+
+        .glitch::before {
+            color: #ef4444; /* Red-500 */
+            z-index: -1;
+            animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            color: #06b6d4; /* Cyan-500 */
+            z-index: -2;
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(1px, -2px); }
+            80% { clip-path: inset(10% 0 60% 0); transform: translate(-1px, 1px); }
+            100% { clip-path: inset(30% 0 40% 0); transform: translate(2px, -2px); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); }
+            20% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 2px); }
+            40% { clip-path: inset(30% 0 20% 0); transform: translate(1px, -2px); }
+            60% { clip-path: inset(15% 0 80% 0); transform: translate(-1px, 1px); }
+            80% { clip-path: inset(55% 0 10% 0); transform: translate(2px, 0px); }
+            100% { clip-path: inset(40% 0 30% 0); transform: translate(-2px, 2px); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ef4444;
+        }
+
+        /* Scanline Overlay */
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.1) 50%,
+                rgba(0,0,0,0.1)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        .neon-border:hover {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3), inset 0 0 10px rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.5);
+        }
+        
+        .neon-border-red:hover {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3), inset 0 0 10px rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        /* Fade In Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealAnim 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        .reveal-delay-1 { animation-delay: 0.2s; }
+        .reveal-delay-2 { animation-delay: 0.4s; }
+        .reveal-delay-3 { animation-delay: 0.6s; }
+
+        @keyframes revealAnim {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-zinc-300 antialiased selection:bg-red-500/30 selection:text-red-200 overflow-x-hidden">
+
+    <!-- Scanline Overlay -->
+    <div class="scanlines fixed inset-0 z-50 opacity-20 pointer-events-none h-screen w-screen"></div>
+
+    <!-- Background Ambience -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-red-900/10 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-cyan-900/10 rounded-full blur-[120px]"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-40 top-0 left-0 border-b border-white/5 bg-black/50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="font-display font-medium text-lg tracking-tight text-white flex items-center gap-2">
+                <div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                ANI.LAB
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-xs font-medium tracking-wide text-zinc-400 uppercase">
+                <a href="#packs" class="hover:text-white transition-colors duration-300">CC Packs</a>
+                <a href="#presets" class="hover:text-white transition-colors duration-300">Twixtor</a>
+                <a href="#socials" class="hover:text-white transition-colors duration-300">Socials</a>
+            </div>
+            <a href="#shop" class="group flex items-center gap-2 text-xs font-medium text-white border border-white/10 px-4 py-2 rounded bg-white/5 hover:bg-white/10 transition-all">
+                <iconify-icon icon="solar:cart-large-minimalistic-linear" width="16" stroke-width="1.5"></iconify-icon>
+                <span class="tracking-wide">STORE</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex flex-col justify-center items-center text-center px-4 pt-16">
+        <div class="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
+            <div class="w-[1px] h-full bg-gradient-to-b from-transparent via-red-500/50 to-transparent"></div>
+            <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent absolute"></div>
+        </div>
+
+        <div class="z-10 max-w-5xl mx-auto">
+            <div class="reveal mb-6 inline-flex items-center justify-center px-3 py-1 rounded-full border border-red-500/30 bg-red-500/5 text-[10px] uppercase tracking-[0.2em] text-red-400">
+                System Online v2.0
+            </div>
+            
+            <h1 class="font-display reveal reveal-delay-1 text-6xl md:text-8xl lg:text-9xl font-medium tracking-tighter text-white mb-2 glitch-wrapper">
+                <span class="glitch" data-text="ANI.EDIITS">ANI.EDIITS</span>
+                <span class="block text-red-500 md:inline-block md:ml-4 text-4xl md:text-8xl tracking-tighter opacity-80">LAB</span>
+            </h1>
+
+            <p class="reveal reveal-delay-2 text-sm md:text-base text-zinc-400 tracking-[0.3em] uppercase max-w-2xl mx-auto mt-8 border-l border-r border-white/10 px-8 py-4">
+                CC • Twixtor • Presets • Cinematic
+            </p>
+
+            <div class="reveal reveal-delay-3 mt-12 flex flex-col md:flex-row items-center justify-center gap-4">
+                <a href="#packs" class="group relative px-8 py-3 bg-white text-black text-xs font-semibold tracking-widest uppercase overflow-hidden">
+                    <div class="absolute inset-0 w-full h-full bg-cyan-400 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+                    <span class="relative z-10 group-hover:text-black transition-colors">Get Started</span>
+                </a>
+                <a href="#presets" class="group px-8 py-3 border border-white/20 text-white text-xs font-semibold tracking-widest uppercase hover:bg-white/5 transition-colors flex items-center gap-2">
+                    <span>Explore Assets</span>
+                    <iconify-icon icon="solar:arrow-right-linear" width="16" stroke-width="1.5" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
+            <div class="w-[1px] h-12 bg-gradient-to-b from-transparent via-white to-transparent"></div>
+        </div>
+    </header>
+
+    <!-- CC Packs Section -->
+    <section id="packs" class="py-32 px-6 max-w-7xl mx-auto border-t border-white/5 relative">
+        <div class="absolute top-0 left-0 w-32 h-[1px] bg-red-500"></div>
+        
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div>
+                <h2 class="font-display text-4xl font-medium text-white tracking-tight mb-2">Color Corrections</h2>
+                <p class="text-zinc-500 text-sm max-w-md">Premium grading packs designed for After Effects and Alight Motion. Elevate your edits instantly.</p>
+            </div>
+            <a href="#" class="text-xs font-medium text-red-400 hover:text-red-300 tracking-wider uppercase flex items-center gap-1">
+                View All Packs <iconify-icon icon="solar:arrow-right-up-linear" width="14"></iconify-icon>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div class="group bg-zinc-900/30 border border-white/5 p-4 hover:bg-zinc-900/50 transition-all duration-300 neon-border-red relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <iconify-icon icon="solar:star-fall-linear" class="text-red-500" width="20"></iconify-icon>
+                </div>
+                <div class="aspect-video bg-gradient-to-br from-zinc-800 to-black mb-4 relative overflow-hidden">
+                    <!-- Placeholder visual -->
+                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&amp;w=2564&amp;auto=format&amp;fit=crop')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-700"></div>
+                    <div class="absolute inset-0 bg-red-500/10 mix-blend-overlay"></div>
+                    <div class="absolute bottom-3 left-3 bg-black/80 backdrop-blur px-2 py-1 text-[10px] uppercase tracking-wider border border-white/10 text-white">
+                        Vibrant
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-medium text-white tracking-tight mb-1">Neon Demon CC</h3>
+                        <p class="text-xs text-zinc-500">After Effects 2023+</p>
+                    </div>
+                    <span class="text-sm font-medium text-white">$4.99</span>
+                </div>
+                <button class="mt-4 w-full py-2 border border-red-500/30 text-red-400 text-xs uppercase tracking-widest hover:bg-red-500 hover:text-black transition-all duration-300">
+                    Purchase
+                </button>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="group bg-zinc-900/30 border border-white/5 p-4 hover:bg-zinc-900/50 transition-all duration-300 neon-border-red">
+                <div class="aspect-video bg-gradient-to-br from-zinc-800 to-black mb-4 relative overflow-hidden">
+                     <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&amp;w=2670&amp;auto=format&amp;fit=crop')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-700"></div>
+                     <div class="absolute bottom-3 left-3 bg-black/80 backdrop-blur px-2 py-1 text-[10px] uppercase tracking-wider border border-white/10 text-white">
+                        Dark
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-medium text-white tracking-tight mb-1">Void Walker CC</h3>
+                        <p class="text-xs text-zinc-500">Universal XML</p>
+                    </div>
+                    <span class="text-sm font-medium text-cyan-400">Free</span>
+                </div>
+                <button class="mt-4 w-full py-2 border border-white/10 text-zinc-300 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
+                    Download
+                </button>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="group bg-zinc-900/30 border border-white/5 p-4 hover:bg-zinc-900/50 transition-all duration-300 neon-border-red">
+                <div class="aspect-video bg-gradient-to-br from-zinc-800 to-black mb-4 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1515462277126-2dd0c162007a?q=80&amp;w=2576&amp;auto=format&amp;fit=crop')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-700"></div>
+                    <div class="absolute bottom-3 left-3 bg-black/80 backdrop-blur px-2 py-1 text-[10px] uppercase tracking-wider border border-white/10 text-white">
+                        Clean
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-medium text-white tracking-tight mb-1">Cyber Glass CC</h3>
+                        <p class="text-xs text-zinc-500">Alight Motion</p>
+                    </div>
+                    <span class="text-sm font-medium text-white">$2.99</span>
+                </div>
+                <button class="mt-4 w-full py-2 border border-red-500/30 text-red-400 text-xs uppercase tracking-widest hover:bg-red-500 hover:text-black transition-all duration-300">
+                    Purchase
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Presets / Twixtor Section -->
+    <section id="presets" class="py-32 px-6 bg-zinc-900/20 border-t border-b border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col items-center text-center mb-16">
+                <span class="text-cyan-400 text-xs tracking-[0.3em] uppercase mb-4">Flow &amp; Velocity</span>
+                <h2 class="font-display text-4xl md:text-5xl font-medium text-white tracking-tight mb-4">
+                    Twixtor <span class="text-cyan-500">&amp;</span> Motion
+                </h2>
+                <p class="text-zinc-500 text-sm max-w-lg">Smooth framerate interpolation and shake presets. Optimized for intense edit synchronization.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Preset Large Card -->
+                <div class="group relative bg-black border border-white/10 p-8 flex flex-col justify-between h-80 overflow-hidden neon-border">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[50px] rounded-full group-hover:bg-cyan-500/20 transition-all"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-10 h-10 rounded-full border border-cyan-500/30 flex items-center justify-center mb-6 text-cyan-400">
+                            <iconify-icon icon="solar:graph-up-linear" width="20"></iconify-icon>
+                        </div>
+                        <h3 class="text-2xl font-medium text-white tracking-tight mb-2">Twixtor Ultimate Pack</h3>
+                        <p class="text-zinc-400 text-sm">4K interpolated clips, uncompressed quality. Perfect for AMVs and flow edits.</p>
+                    </div>
+
+                    <div class="relative z-10 flex items-center justify-between border-t border-white/10 pt-6 mt-6">
+                        <div class="flex gap-2">
+                             <span class="px-2 py-1 bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-400 uppercase tracking-wider">60 FPS</span>
+                             <span class="px-2 py-1 bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-400 uppercase tracking-wider">4K UHD</span>
+                        </div>
+                        <button class="flex items-center gap-2 text-xs font-medium text-white hover:text-cyan-400 transition-colors">
+                            GET ACCESS <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preset Large Card -->
+                <div class="group relative bg-black border border-white/10 p-8 flex flex-col justify-between h-80 overflow-hidden neon-border-red">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/10 blur-[50px] rounded-full group-hover:bg-red-500/20 transition-all"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-10 h-10 rounded-full border border-red-500/30 flex items-center justify-center mb-6 text-red-400">
+                            <iconify-icon icon="solar:bolt-linear" width="20"></iconify-icon>
+                        </div>
+                        <h3 class="text-2xl font-medium text-white tracking-tight mb-2">Velocity God Presets</h3>
+                        <p class="text-zinc-400 text-sm">One-click time-remapping curves. Aggressive, smooth, and synced to beat.</p>
+                    </div>
+
+                    <div class="relative z-10 flex items-center justify-between border-t border-white/10 pt-6 mt-6">
+                        <div class="flex gap-2">
+                             <span class="px-2 py-1 bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-400 uppercase tracking-wider">XML</span>
+                             <span class="px-2 py-1 bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-400 uppercase tracking-wider">FFX</span>
+                        </div>
+                        <button class="flex items-center gap-2 text-xs font-medium text-white hover:text-red-400 transition-colors">
+                            DOWNLOAD <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Tool / CTA -->
+    <section class="py-24 px-6 border-b border-white/5">
+        <div class="max-w-4xl mx-auto bg-gradient-to-r from-zinc-900 to-black border border-zinc-800 p-1 md:p-12 relative overflow-hidden rounded-lg">
+             <!-- Decorative elements -->
+             <div class="absolute top-0 right-0 w-[300px] h-[300px] bg-blue-600/10 blur-[100px] pointer-events-none"></div>
+
+             <div class="relative z-10 flex flex-col md:flex-row items-center gap-12 text-center md:text-left">
+                <div class="w-24 h-24 shrink-0 flex items-center justify-center border border-zinc-700 bg-zinc-800/50 rounded-full">
+                    <iconify-icon icon="solar:programming-linear" class="text-white" width="40" stroke-width="1"></iconify-icon>
+                </div>
+         
